@@ -3,19 +3,27 @@ import * as path from "path";
 import * as zlib from "zlib";
 import * as crypto from "crypto";
 
+
 console.error("Logs from your program will appear here!");
 
-const command = process.argv[2];
+const args = process.argv.slice(2);
+const command = args[0];
 
+enum Commands {
+  Init = "init",
+  CatFile = "cat-file",
+  HashObject = "hash-object",
+  LsTree = "ls-tree",
+}
 switch (command) {
-  case "init":
+  case Commands.Init:
     createGitDirectory();
     break;
-  case "cat-file":
+  case Commands.CatFile:
     readFileBlob();
     break;
-  case "hash-object":
-    hashObject(process.argv);
+  case Commands.HashObject:
+    hashObject(args);
     break;
   default:
     throw new Error(`Unknown command ${command}`);
