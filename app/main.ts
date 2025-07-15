@@ -83,8 +83,10 @@ function hashObject(args: string[]): void {
     return;
   }
 
-  const filePath = path.join(__dirname, fileName);
-  const fileContent = fs.readFileSync(filePath);
+  // const filePath = path.join(__dirname, fileName);
+  // const fileContent = fs.readFileSync(filePath);
+  const fileContent = fs.readFileSync(process.cwd() + '/'+ fileName);
+
   const objectBuffer = Buffer.from(`blob ${fileContent.length}\x00${fileContent.toString()}`);
   const blobData = zlib.deflateSync(objectBuffer);
   const objectSha = crypto.createHash("sha1").update(objectBuffer).digest("hex");
@@ -191,7 +193,7 @@ function recursiveCreateTree(dir: string): string {
 }
 
 function handleWriteTreeCommand() {
-  const basePath = process.cwd();
+  const basePath = process.cwd();  
   const treeHash = recursiveCreateTree(basePath);
   process.stdout.write(treeHash);
 }
